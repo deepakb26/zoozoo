@@ -19,7 +19,7 @@ class TicketingAgent:
         self.dynamodb = boto3.resource('dynamodb', region_name=region_name)
         self.table = self.dynamodb.Table(table_name)
     
-    def create_ticket(self, subject, description, priority="medium", assigned_to=None):
+    def create_ticket(self, subject, description, user_id,emergency, priority="medium", assigned_to=None):
         """
         Create a new ticket in the DynamoDB table.
         
@@ -38,11 +38,14 @@ class TicketingAgent:
         ticket = {
             'ticket_id': ticket_id,
             'subject': subject,
+            'user_id':user_id,
+            'assigned_to': assigned_to,
             'description': description,
             'status': 'open',
             'priority': priority,
             'created_at': timestamp,
-            'updated_at': timestamp
+            'updated_at': timestamp,
+            'emergency':emergency
         }
         
         if assigned_to:
